@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 020cdf92dbf982b4f894a6435234cd77
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - stonePrefab: {fileID: 3907501813489898655, guid: 72d0498c659debb48a0fdad9bdefeeb3, type: 3}
+  - grassBlockPrefab: {fileID: 9098363193711792192, guid: 373ae881eed462840a91b75066bf4431, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
