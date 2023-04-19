@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 020cdf92dbf982b4f894a6435234cd77
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - groundBlockPrefab: {fileID: 8476132034037651703, guid: b72e005b06e02704fa0c88b4cd78f3bf, type: 3}
+  - airPrefab: {fileID: 574557205201409042, guid: e74dd1a5aa56d7e41b6911ca3ea2e726, type: 3}
+  - stonePrefab: {fileID: 8916930299331188528, guid: 216bef6eec2b2c14d82484440e91937b, type: 3}
+  - grassBlockPrefab: {fileID: 1871829255152721687, guid: 4f0af23762c3c0b48834373372845584, type: 3}
+  - dirtPrefab: {fileID: 6363695215342603676, guid: 07b02d9e3fda3574e87238f725892c46, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
