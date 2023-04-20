@@ -28,6 +28,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject[] slots = new GameObject[10];
     [SerializeField] private GameObject highlight;
     [SerializeField] private GameObject panel;
+    [SerializeField] private GameObject controls;
 
     // Start is called before the first frame update
     void Awake()
@@ -117,6 +118,7 @@ public class Controller : MonoBehaviour
         gamePaused = false;
 
         cursor.SetActive(true);
+        controls.SetActive(false);
         panel.SetActive(false);
     }
 
