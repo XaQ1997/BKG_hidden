@@ -3,12 +3,12 @@
     "maps": [
         {
             "name": "Player",
-            "id": "63dab0fe-45c1-4fee-aae3-0ea4e8b6dc7d",
+            "id": "831725df-25e6-439a-a94b-86aacbb3e14e",
             "actions": [
                 {
                     "name": "Move",
                     "type": "Button",
-                    "id": "04d4aefb-278a-4efc-a721-a8fb491701d1",
+                    "id": "ec94a48b-a01e-4716-878b-52f85e51610e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -17,17 +17,26 @@
                 {
                     "name": "Look",
                     "type": "Value",
-                    "id": "79eedc5e-d190-44a1-b482-cf278fbbf20c",
+                    "id": "b270e5ff-bbeb-4a4b-adda-6af03885f323",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "BuildOrDestroy",
+                    "type": "Button",
+                    "id": "8a80f140-4e60-400d-bbeb-bcfc59f04093",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
-                    "id": "da85ec90-d0b5-4cd1-9f85-f95d8fbc5fb7",
+                    "id": "8e02a67f-02a1-49aa-b66e-d9b1d2b42630",
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
@@ -38,18 +47,7 @@
                 },
                 {
                     "name": "",
-                    "id": "7137f9d3-2e12-4a72-935b-4cb7c536154e",
-                    "path": "<Keyboard>/x",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a91f59b3-b6f5-424d-aaf5-84bc402154e9",
+                    "id": "afa3473c-2f9e-49c1-9be4-4e736fdc6917",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
@@ -60,7 +58,18 @@
                 },
                 {
                     "name": "",
-                    "id": "632a9ad1-0df6-42d1-9e74-085d045955f1",
+                    "id": "2d7b0192-20db-4de7-8125-b5631efdcae6",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "667a0b10-c210-42a4-a68e-f734e787dab7",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
@@ -71,7 +80,7 @@
                 },
                 {
                     "name": "",
-                    "id": "6895e82f-3fa5-476e-be89-505f19154a27",
+                    "id": "4b3530bf-afec-498c-b99e-dce5f63d8f41",
                     "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
@@ -82,7 +91,7 @@
                 },
                 {
                     "name": "",
-                    "id": "782e1c7f-64a4-4b48-a789-aca509dc79db",
+                    "id": "1c68a446-a3fc-4efb-a615-68a883b6ed77",
                     "path": "<Keyboard>/c",
                     "interactions": "",
                     "processors": "",
@@ -93,7 +102,7 @@
                 },
                 {
                     "name": "",
-                    "id": "be43e5b9-9160-4d5d-921c-43879b18be2b",
+                    "id": "32074b26-798f-4d05-96bb-edadcf6315f9",
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
@@ -101,32 +110,147 @@
                     "action": "Look",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Gameplay",
-            "id": "5f581f2c-24f4-4a06-88c1-b819d63e30cb",
-            "actions": [
-                {
-                    "name": "HUD",
-                    "type": "Value",
-                    "id": "e44b7576-1c61-4cc1-932c-c4d1272bfc20",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
+                },
                 {
                     "name": "",
-                    "id": "ebcb0950-89aa-4629-b0b2-1defb076a3e2",
+                    "id": "78431aff-7d02-45d0-a9ce-bf1dbb459622",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "HUD",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f9a031b7-4aa1-444b-a180-11c23625561e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da07311f-1fc1-47e3-b61d-108462582300",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b07c853c-d65c-4ad8-bb20-7411ad75eedf",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "53d7b424-8f54-4cfe-9c73-d4ba43d80d7f",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c7c4cfc-c230-4978-9ce2-43439e8a9e3b",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fc2678f3-fe77-41ce-9826-94fdef8cb989",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9bd082f-a2f7-4f1a-a306-91b5796fa6f6",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "545355e8-1da4-4889-9ee5-c8186cb0a9be",
+                    "path": "<Keyboard>/6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3b5fdf9-0a17-44bd-aacb-bac92b2b9427",
+                    "path": "<Keyboard>/7",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "addc5636-51ef-427a-b303-1f102fef472c",
+                    "path": "<Keyboard>/8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cd487667-cb54-41d3-b05a-6d1b36a43406",
+                    "path": "<Keyboard>/9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d3735f2-226b-4c47-b684-7ec732f45d57",
+                    "path": "<Keyboard>/0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
