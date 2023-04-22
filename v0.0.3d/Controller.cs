@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(CharacterController))]
 public class Controller : MonoBehaviour
 {
     private float horizontalSpeed =10f;
@@ -13,20 +14,13 @@ public class Controller : MonoBehaviour
     private bool gamePaused = false;
     private int nrSlot = 0;
 
-    [SerializeField] private InputActionReference MoveActionReference;
-    [SerializeField] private InputActionReference BuildOrDestroyActionsReference;
-
-    private InputBinding move;
-
-    private InputBinding scroll;
-
-    private InputBinding destroy;
-    private InputBinding build;
+    private InputManager input;
+    private CharacterController controller;
 
     [SerializeField] private KeyCode pause = KeyCode.Escape;
     [SerializeField] private KeyCode kill = KeyCode.K;
 
-    [SerializeField] private KeyCode[] slotKeys = new KeyCode[] { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0 };
+    [SerializeField] private KeyCode[] slotKeys = new KeyCode[] { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9 };
 
     [SerializeField] private GameObject cursor;
     [SerializeField] private GameObject[] slots = new GameObject[10];
@@ -35,9 +29,10 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject controls;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        Controls();
+        input = input.Instance;
+
         Resume();
     }
 
@@ -56,49 +51,12 @@ public class Controller : MonoBehaviour
             transform.Rotate(0, h, 0, Space.World);
             transform.Rotate(-v, 0, 0, Space.Self);
 
+            Vector3 movement = input.PlayerMovement();
+            controller.Move(movement * Time.deltaTime * moveSpeed);
+
             for (int i = 0; i < 10; ++i)
                 if (Input.GetKey(slotKeys[i]))
                     nrSlot = i;
-
-            /*if (Input.GetKey(forward))
-                transform.position += new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed;
-            if (Input.GetKey(backward))
-                transform.position -= new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed;
-            if (Input.GetKey(left))
-                transform.position -= new Vector3(transform.right.x, 0, transform.right.z) * moveSpeed;
-            if (Input.GetKey(right))
-                transform.position += new Vector3(transform.right.x, 0, transform.right.z) * moveSpeed;
-            if (Input.GetKey(up))
-                transform.position += new Vector3(0, transform.up.y, 0) * moveSpeed;
-            if (Input.GetKey(down))
-                transform.position -= new Vector3(0, transform.up.y, 0) * moveSpeed;
-
-            if (Input.GetKey(destroy))
-                blockController.DestroyBlock();
-            if (Input.GetKey(build))
-            {
-                if(slots[nrSlot])
-                    blockController.Build(slots[nrSlot]);
-            }
-
-            if (Input.GetKey(kill))
-                gameSettings.Spawn();
-
-            if (scroll != 0)
-            {
-                if (scroll > 0)
-                    nrSlot--;
-                else
-                    nrSlot++;
-
-                if (nrSlot > 9)
-                    nrSlot = 0;
-                if (nrSlot < 0)
-                    nrSlot = 9;
-
-                Vector3 pos = new Vector3(88 * nrSlot - 396, 0, 0);
-                highlight.transform.localPosition = pos;
-            }*/
             
             Vector3 pos = new Vector3(88 * nrSlot - 396, 0, 0);
             highlight.transform.localPosition = pos;
@@ -115,21 +73,10 @@ public class Controller : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Time.timeScale = 0;
                 gamePaused = true;
-
                 cursor.SetActive(false);
                 panel.SetActive(true);
             }
         }
-    }
-
-    public void Controls()
-    {
-        move=MoveActionReference.action.bindings[0];
-
-        scroll = BuildOrDestroyActionsReference.action.bindings[2];
-
-        destroy = BuildOrDestroyActionsReference.action.bindings[0];
-        build = BuildOrDestroyActionsReference.action.bindings[1];
     }
 
     public void Resume()
@@ -137,7 +84,6 @@ public class Controller : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1;
         gamePaused = false;
-
         cursor.SetActive(true);
         controls.SetActive(false);
         panel.SetActive(false);

@@ -2767,6 +2767,8 @@ GameObject:
   - component: {fileID: 963194233}
   - component: {fileID: 963194232}
   - component: {fileID: 963194231}
+  - component: {fileID: 963194235}
+  - component: {fileID: 963194236}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2858,16 +2860,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a1fe68d8857a24eaef8207b1a28cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forward: 119
-  backward: 120
-  left: 97
-  right: 100
-  up: 101
-  down: 99
   pause: 27
-  destroy: 323
-  build: 324
   kill: 107
+  slotKeys: 31000000320000003300000034000000340000003500000036000000370000003800000039000000
   cursor: {fileID: 1073380676}
   slots:
   - {fileID: 8476132034037651703, guid: b72e005b06e02704fa0c88b4cd78f3bf, type: 3}
@@ -3195,6 +3190,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPosition: {x: 0, y: 66, z: 0}
   spawnRotation: {x: 0, y: 0, z: 0, w: 0}
+--- !u!143 &963194235
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &963194236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac6311ba0d45baf4daa962288992c842, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &979138051
 GameObject:
   m_ObjectHideFlags: 0

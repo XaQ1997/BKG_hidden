@@ -26,7 +26,40 @@
             ],
             "bindings": [
                 {
-                    "name": "3D Vector",
+                    "name": "",
+                    "id": "f9a031b7-4aa1-444b-a180-11c23625561e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da07311f-1fc1-47e3-b61d-108462582300",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "78431aff-7d02-45d0-a9ce-bf1dbb459622",
+                    "path": "<Mouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BuildOrDestroy",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "WAXD</EC",
                     "id": "ec1027a6-676d-4ffc-bdd9-1be733caf0f6",
                     "path": "3DVector",
                     "interactions": "",
@@ -101,39 +134,6 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "f9a031b7-4aa1-444b-a180-11c23625561e",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "BuildOrDestroy",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "da07311f-1fc1-47e3-b61d-108462582300",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "BuildOrDestroy",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "78431aff-7d02-45d0-a9ce-bf1dbb459622",
-                    "path": "<Mouse>/scroll",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "BuildOrDestroy",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         }
