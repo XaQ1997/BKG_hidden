@@ -5,23 +5,26 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+public enum GameMode
+{
+    Observator,
+    Creative
+}
+
+[RequireComponent(typeof(PlayerInput))]
+[RequireComponent(typeof(Rigidbody))]
 public class Controller : MonoBehaviour
 {
     private float horizontalSpeed =10f;
     private float verticalSpeed = 2f;
-    private float moveSpeed = 0.1f;
+    private float moveSpeed = 2f;
     private bool gamePaused = false;
     private float scroll;
     private int nrSlot = 0;
 
-    [SerializeField] private InputAction input;
-
-    /*[SerializeField] private KeyCode forward=KeyCode.W;
-    [SerializeField] private KeyCode backward=KeyCode.X;
-    [SerializeField] private KeyCode left=KeyCode.A;
-    [SerializeField] private KeyCode right=KeyCode.D;
-    [SerializeField] private KeyCode up = KeyCode.E;
-    [SerializeField] private KeyCode down = KeyCode.C;*/
+    [SerializeField] private PlayerInput input;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] private GameMode gm=GameMode.Creative;
 
     [SerializeField] private KeyCode pause = KeyCode.Escape;
     [SerializeField] private KeyCode destroy = KeyCode.Mouse0;
@@ -61,24 +64,16 @@ public class Controller : MonoBehaviour
 
         if (gamePaused == false)
         {
+            if (gm == GameMode.Observator)
+                this.gameObject.layer = LayerMask.NameToLayer("Observator");
+            else
+                this.gameObject.layer = LayerMask.NameToLayer("Default");
+
             float h = horizontalSpeed * Input.GetAxis("Mouse X");
             float v = verticalSpeed * Input.GetAxis("Mouse Y");
 
             transform.Rotate(0, h, 0, Space.World);
             transform.Rotate(-v, 0, 0, Space.Self);
-
-            /*if (Input.GetKey(forward))
-                transform.position += new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed;
-            if (Input.GetKey(backward))
-                transform.position -= new Vector3(transform.forward.x, 0, transform.forward.z) * moveSpeed;
-            if (Input.GetKey(left))
-                transform.position -= new Vector3(transform.right.x, 0, transform.right.z) * moveSpeed;
-            if (Input.GetKey(right))
-                transform.position += new Vector3(transform.right.x, 0, transform.right.z) * moveSpeed;
-            if (Input.GetKey(up))
-                transform.position += new Vector3(0, transform.up.y, 0) * moveSpeed;
-            if (Input.GetKey(down))
-                transform.position -= new Vector3(0, transform.up.y, 0) * moveSpeed;*/
 
             if (Input.GetKey(destroy))
                 blockController.DestroyBlock();
@@ -168,5 +163,11 @@ public class Controller : MonoBehaviour
         mapGenerator.InitGame(this.gameObject.GetComponent<BlockMap>().blockMap);
 
         Resume();
+    }
+
+    public void OnMove(InputAction.CallbackContext ctx)
+    {
+        rb.velocity = ctx.ReadValue<Vector3>() * moveSpeed;
+        rb.velocity = Vector3.MoveTowards(rb.velocity, transform.forward, moveSpeed);
     }
 }
