@@ -31,7 +31,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private KeyCode destroy = KeyCode.Mouse0;
     [SerializeField] private KeyCode build = KeyCode.Mouse1;
     [SerializeField] private KeyCode kill = KeyCode.K;
-    [SerializeField] private KeyCode jump = KeyCode.S;
+    [SerializeField] private KeyCode jump = KeyCode.Space;
 
     [SerializeField] private KeyCode[] slotKeys = new KeyCode[] { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0 };
     [SerializeField] private KeyCode[] cameras = new KeyCode[] { KeyCode.F1, KeyCode.F2, KeyCode.F3 };
@@ -86,7 +86,9 @@ public class Controller : MonoBehaviour
             {
                 rb.detectCollisions = true;
 
-                cursor.SetActive(true);
+                if(firstPersonCamera.active==true)
+                    cursor.SetActive(true);
+                
                 hud.SetActive(true);
             }
 
@@ -191,5 +193,13 @@ public class Controller : MonoBehaviour
     public void OnMove(InputAction.CallbackContext ctx)
     {
         rb.velocity = transform.right * ctx.ReadValue<Vector3>().x + transform.forward * ctx.ReadValue<Vector3>().z + transform.up * ctx.ReadValue<Vector3>().y;
+    }
+
+    public void ChangeGM()
+    {
+        if (gm == GameMode.Creative)
+            gm = GameMode.Observator;
+        else
+            gm = GameMode.Creative;
     }
 }
