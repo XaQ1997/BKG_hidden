@@ -24,12 +24,14 @@ public class Controller : MonoBehaviour
 
     [SerializeField] private PlayerInput input;
     [SerializeField] private Rigidbody rb;
+
     [SerializeField] private GameMode gm=GameMode.Creative;
 
     [SerializeField] private KeyCode pause = KeyCode.Escape;
     [SerializeField] private KeyCode destroy = KeyCode.Mouse0;
     [SerializeField] private KeyCode build = KeyCode.Mouse1;
     [SerializeField] private KeyCode kill = KeyCode.K;
+    [SerializeField] private KeyCode jump = KeyCode.S;
 
     [SerializeField] private KeyCode[] slotKeys = new KeyCode[] { KeyCode.Alpha1, KeyCode.Alpha2, KeyCode.Alpha3, KeyCode.Alpha4, KeyCode.Alpha5, KeyCode.Alpha6, KeyCode.Alpha7, KeyCode.Alpha8, KeyCode.Alpha9, KeyCode.Alpha0 };
     [SerializeField] private KeyCode[] cameras = new KeyCode[] { KeyCode.F1, KeyCode.F2, KeyCode.F3 };
@@ -39,6 +41,7 @@ public class Controller : MonoBehaviour
     [SerializeField] private GameObject thirdPersonCamera;
 
     [SerializeField] private GameObject cursor;
+    [SerializeField] private GameObject hud;
     [SerializeField] private GameObject[] slots = new GameObject[10];
     [SerializeField] private GameObject highlight;
     [SerializeField] private GameObject panel;
@@ -48,6 +51,8 @@ public class Controller : MonoBehaviour
     void Awake()
     {
         Resume();
+
+        rb.detectCollisions = true;
 
         firstPersonCamera.SetActive(true);
         secondPersonCamera.SetActive(false);
@@ -64,20 +69,30 @@ public class Controller : MonoBehaviour
 
         if (gamePaused == false)
         {
-            if (gm == GameMode.Observator)
-                this.gameObject.layer = LayerMask.NameToLayer("Observator");
-            else
-                this.gameObject.layer = LayerMask.NameToLayer("Default");
-
             float h = horizontalSpeed * Input.GetAxis("Mouse X");
             float v = verticalSpeed * Input.GetAxis("Mouse Y");
 
             transform.Rotate(0, h, 0, Space.World);
             transform.Rotate(-v, 0, 0, Space.Self);
 
-            if (Input.GetKey(destroy))
+            if (gm == GameMode.Observator)
+            {
+                rb.detectCollisions = false;
+
+                cursor.SetActive(false);
+                hud.SetActive(false);
+            }
+            else
+            {
+                rb.detectCollisions = true;
+
+                cursor.SetActive(true);
+                hud.SetActive(true);
+            }
+
+            if (Input.GetKey(destroy)&&gm!=GameMode.Observator)
                 blockController.DestroyBlock();
-            if (Input.GetKey(build))
+            if (Input.GetKey(build)&&gm!=GameMode.Observator)
             {
                 if(slots[nrSlot])
                     blockController.Build(slots[nrSlot]);
@@ -120,6 +135,7 @@ public class Controller : MonoBehaviour
                 gamePaused = true;
 
                 cursor.SetActive(false);
+                hud.SetActive(false);
                 panel.SetActive(true);
             }
         }
@@ -129,18 +145,24 @@ public class Controller : MonoBehaviour
             firstPersonCamera.SetActive(true);
             secondPersonCamera.SetActive(false);
             thirdPersonCamera.SetActive(false);
+
+            cursor.SetActive(true);
         }
         if(Input.GetKeyDown(cameras[1]))
         {
             firstPersonCamera.SetActive(false);
             secondPersonCamera.SetActive(true);
             thirdPersonCamera.SetActive(false);
+
+            cursor.SetActive(false);
         }
         if(Input.GetKeyDown(cameras[2]))
         {
             firstPersonCamera.SetActive(false);
             secondPersonCamera.SetActive(false);
             thirdPersonCamera.SetActive(true);
+
+            cursor.SetActive(false);
         }
     }
 
@@ -151,6 +173,7 @@ public class Controller : MonoBehaviour
         gamePaused = false;
 
         cursor.SetActive(true);
+        hud.SetActive(true);
         controls.SetActive(false);
         panel.SetActive(false);
     }
@@ -167,7 +190,6 @@ public class Controller : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext ctx)
     {
-        rb.velocity = ctx.ReadValue<Vector3>() * moveSpeed;
-        rb.velocity = Vector3.MoveTowards(rb.velocity, transform.forward, moveSpeed);
+        rb.velocity = transform.right * ctx.ReadValue<Vector3>().x + transform.forward * ctx.ReadValue<Vector3>().z + transform.up * ctx.ReadValue<Vector3>().y;
     }
 }

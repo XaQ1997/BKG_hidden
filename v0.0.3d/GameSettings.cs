@@ -13,8 +13,7 @@ public class GameSettings : MonoBehaviour
         if(Screen.fullScreen)
             Screen.fullScreen = !Screen.fullScreen;
 
-        transform.position = spawnPosition;
-        transform.rotation = spawnRotation;
+        Spawn();
     }
 
     // Update is called once per frame
