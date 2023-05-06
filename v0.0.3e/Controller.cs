@@ -17,10 +17,11 @@ public class Controller : MonoBehaviour
 {
     private float horizontalSpeed =10f;
     private float verticalSpeed = 2f;
-    private float moveSpeed = 0.2f;
     private bool gamePaused = false;
     private float scroll;
     private int nrSlot = 0;
+    private float v;
+    private float h;
 
     [SerializeField] private LayerMask layer;
     [SerializeField] private float gravity = 9.81f;
@@ -78,8 +79,8 @@ public class Controller : MonoBehaviour
             else
                 isGrounded = false;
 
-            float h = horizontalSpeed * Input.GetAxis("Mouse X");
-            float v = verticalSpeed * Input.GetAxis("Mouse Y");
+            h = horizontalSpeed * Input.GetAxis("Mouse X");
+            v = verticalSpeed * Input.GetAxis("Mouse Y");
 
             transform.Rotate(0, h, 0, Space.World);
             transform.Rotate(-v, 0, 0, Space.Self);
@@ -201,14 +202,17 @@ public class Controller : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext ctx)
     {
-        rb.velocity = transform.right * ctx.ReadValue<Vector3>().x + transform.forward * ctx.ReadValue<Vector3>().z + transform.up * ctx.ReadValue<Vector3>().y;
+        Vector3 move = new Vector3((transform.right * ctx.ReadValue<Vector3>().x + transform.forward * ctx.ReadValue<Vector3>().z).x, (transform.up * ctx.ReadValue<Vector3>().y).y, (transform.right * ctx.ReadValue<Vector3>().x + transform.forward * ctx.ReadValue<Vector3>().z).z);
+
+        rb.velocity = move;
+
         rb.useGravity = false;
     }
 
     public void OnJump(InputAction.CallbackContext ctx)
     {
         if (isGrounded == true)
-            rb.AddForce(Vector3.up * gravity * moveSpeed, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * 25 / gravity, ForceMode.Impulse);
 
         rb.useGravity = true;
     }
