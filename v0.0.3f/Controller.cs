@@ -110,8 +110,8 @@ public class Controller : MonoBehaviour
             h = horizontalSpeed * Input.GetAxis("Mouse X");
             v = verticalSpeed * Input.GetAxis("Mouse Y");
 
-            head.transform.Rotate(-v, 0, 0, Space.Self);
             head.transform.Rotate(0, h, 0, Space.World);
+            head.transform.Rotate(-v, 0, 0, Space.Self);
 
             if (rb.velocity.x != 0 && rb.velocity.z != 0)
             {
@@ -122,8 +122,6 @@ public class Controller : MonoBehaviour
 
                     leftLeg.transform.rotation = inverseRotation;
                     rightHand.transform.rotation = inverseRotation;
-
-                    transform.Rotate(0, h, 0);
 
                     isForward = false;
                 }
@@ -278,14 +276,14 @@ public class Controller : MonoBehaviour
 
     public void OnHorizontalMove(InputAction.CallbackContext ctx)
     {
-        rb.velocity = new Vector3((transform.right * ctx.ReadValue<Vector2>().x + transform.forward * ctx.ReadValue<Vector2>().y).x, 0, (transform.right * ctx.ReadValue<Vector2>().x + transform.forward * ctx.ReadValue<Vector2>().y).z);
+        rb.velocity = new Vector3((head.transform.right * ctx.ReadValue<Vector2>().x + head.transform.forward * ctx.ReadValue<Vector2>().y).x, 0, (head.transform.right * ctx.ReadValue<Vector2>().x + head.transform.forward * ctx.ReadValue<Vector2>().y).z);
     }
 
     public void OnVerticalMove(InputAction.CallbackContext ctx)
     {
-        isGravity = false;
+        rb.velocity = ctx.ReadValue<float>() * transform.up;
 
-        rb.velocity = new Vector3(0, ctx.ReadValue<float>() * transform.up.y, 0);
+        isGravity = false;
     }
 
     public void ChangeGM()
