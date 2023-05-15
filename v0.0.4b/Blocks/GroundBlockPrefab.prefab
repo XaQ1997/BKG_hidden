@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7833458422657296232}
   m_Layer: 0
   m_Name: GroundBlock
-  m_TagString: Untagged
+  m_TagString: Selectable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,8 +112,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseColor: {r: 0, g: 0, b: 0, a: 1}
   highlightedColor: {r: 0, g: 0, b: 0, a: 0.43137255}
-  baseMaterial: {fileID: 2100000, guid: d094d6e3b58b6b54c8893bc5a9af87df, type: 2}
-  highlightedMaterial: {fileID: 2100000, guid: 959f62a371b9d4e4c856cad835100bf0, type: 2}
 --- !u!1 &8476132034037651703
 GameObject:
   m_ObjectHideFlags: 0
