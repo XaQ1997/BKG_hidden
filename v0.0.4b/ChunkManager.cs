@@ -8,31 +8,7 @@ public class ChunkManager : MonoBehaviour
 {
     [HideInInspector] public Dictionary<Vector2, bool> chunkLoaded = new Dictionary<Vector2, bool>();
 
-    public void Load(Chunk chunk)
-    {
-        chunkLoaded[chunk.Position] = true;
-
-        var blockMap = this.gameObject.GetComponent<BlockMap>().blockMap;
-
-        GameObject[,,] blocks = new GameObject[16, 256, 16];
-
-        for (int x = 0; x < 16; ++x)
-            for (int y = 0; y < 256; ++y)
-                for (int z = 0; z < 16; ++z)
-                    blocks[x, y, z] = Instantiate(blockMap[(int)chunk.Blocks[x, y, z]].BlockPrefab, new Vector3(chunk.Position.x+x, y, chunk.Position.y+z), Quaternion.identity);
-    }
-
-    public void Unload(GameObject[,,] blocks, Chunk chunk)
-    {
-        chunkLoaded[chunk.Position] = false;
-
-        for (int x = 0; x < 16; ++x)
-            for (int y = 0; y < 256; ++y)
-                for (int z = 0; z < 16; ++z)
-                    Destroy(blocks[x, y, z]);
-    }
-
-    internal void GenerateChunk(uint seed, Chunk chunk, int? vO = null, int? dir = null)
+    public void GenerateChunk(uint seed, Chunk chunk, int? vO = null, int? dir = null)
     {
         int direction = new Random(seed + (uint)(257 * chunk.Position.x + chunk.Position.y)).NextInt(0, 4);
 
@@ -162,6 +138,8 @@ public class ChunkManager : MonoBehaviour
         chunk.Blocks = tmp;
 
         chunk.verticalOffsets = offsets;
+
+        chunkLoaded[chunk.Position] = false;
     }
 }
 

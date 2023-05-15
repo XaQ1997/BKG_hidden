@@ -251,7 +251,7 @@ public class Controller : MonoBehaviour
         var mapGenerator = this.gameObject.GetComponent<MapGenerator>();
 
         mapGenerator.CleanMap();
-        mapGenerator.InitGame(this.gameObject.GetComponent<BlockMap>().blockMap);
+        mapGenerator.InitGame();
 
         Resume();
     }
