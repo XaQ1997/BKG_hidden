@@ -11,7 +11,7 @@ public class ChunkManager : MonoBehaviour
 
     public Chunk GenerateChunk(uint seed, Vector2Int vector, int? vO = null, int? dir = null)
     {
-        int direction = new Random(seed + (uint)(257 * vector.x + vector.y)).NextInt(0, 4);
+        int direction = new Random(seed + (uint)(257 * 16*vector.x + 16*vector.y)).NextInt(0, 4);
 
         int?[,,] blocks = new int?[16, 256, 16];
         int[,] grounds = new int[16, 16];
@@ -20,8 +20,8 @@ public class ChunkManager : MonoBehaviour
         for (int x = 0; x < 16; ++x)
             for (int z = 0; z < 16; ++z)
             {
-                grounds[x, z] = (new Random(257 * seed + (uint)(257 * (vector.x + x) + vector.y + z)).NextInt(0, 3) + new Random(509 * seed + (uint)(509 * (vector.y + z) + Mathf.Pow(-1, x) * (vector.x + x))).NextInt(0, 3)) / 2;
-                verticalOffsets[x, z] = new Random(257 * seed + (uint)(257 * (vector.x + x) + vector.y + z)).NextInt(-1, 1) + new Random(509 * seed + (uint)(509 * (vector.y + z) + Mathf.Pow(-1, x) * (vector.x + x))).NextInt(-1, 1) / 2;
+                grounds[x, z] = (new Random(257 * seed + (uint)(257 * (16 * vector.x + x) + 16 * vector.y + z)).NextInt(0, 3) + new Random(509 * seed + (uint)(509 * (16 * vector.y + z) + Mathf.Pow(-1, x) * (16 * vector.x + x))).NextInt(0, 3)) / 2;
+                verticalOffsets[x, z] = new Random(257 * seed + (uint)(257 * (16*vector.x + x) + 16*vector.y + z)).NextInt(-1, 2) + new Random(509 * seed + (uint)(509 * (16*vector.y + z) + Mathf.Pow(-1, x) * (16*vector.x + x))).NextInt(-1, 2) / 2;
             }
 
         for (int y = 0; y < 256; ++y)

@@ -17,7 +17,7 @@ public class MapGenerator : MonoBehaviour
     private uint seed;
 
     [SerializeField] private ChunkManager chunkManager;
-    [SerializeField] private int renderDistance = 1;
+    [SerializeField] private int renderDistance = 2;
 
     [SerializeField] private BlockMap blockMap;
 
@@ -201,7 +201,7 @@ public class MapGenerator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (chunkManager.inChunk[new Vector2Int((int)transform.position.x / 16, (int)transform.position.z / 16)] ==false)
+        if (chunks.ContainsKey(new Vector2Int((int)transform.position.x / 16, (int)transform.position.z / 16))==false ||chunkManager.inChunk[new Vector2Int((int)transform.position.x / 16, (int)transform.position.z / 16)] ==false)
         {
             foreach (var ch in chunks.Keys)
             {
