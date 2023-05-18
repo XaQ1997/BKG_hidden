@@ -6,11 +6,12 @@ using Random = Unity.Mathematics.Random;
 
 public class ChunkManager : MonoBehaviour
 {
-    [HideInInspector] public Dictionary<Vector2, bool> chunkLoaded = new Dictionary<Vector2, bool>();
+    [HideInInspector] public Dictionary<Vector2Int, bool> chunkLoaded = new Dictionary<Vector2Int, bool>();
+    [HideInInspector] public Dictionary<Vector2Int, bool> inChunk = new Dictionary<Vector2Int, bool>();
 
-    public void GenerateChunk(uint seed, Chunk chunk, int? vO = null, int? dir = null)
+    public Chunk GenerateChunk(uint seed, Vector2Int vector, int? vO = null, int? dir = null)
     {
-        int direction = new Random(seed + (uint)(257 * chunk.Position.x + chunk.Position.y)).NextInt(0, 4);
+        int direction = new Random(seed + (uint)(257 * vector.x + vector.y)).NextInt(0, 4);
 
         int?[,,] blocks = new int?[16, 256, 16];
         int[,] grounds = new int[16, 16];
@@ -19,13 +20,8 @@ public class ChunkManager : MonoBehaviour
         for (int x = 0; x < 16; ++x)
             for (int z = 0; z < 16; ++z)
             {
-                grounds[x, z] = (new Random(257 * seed + (uint)(257 * (chunk.Position.x + x) + chunk.Position.y + z)).NextInt(0, 3) + new Random(509 * seed + (uint)(509 * (chunk.Position.y + z) + Mathf.Pow(-1, x) * (chunk.Position.x + x))).NextInt(0, 3)) / 2;
-                verticalOffsets[x, z] = new Random(257 * seed + (uint)(257 * (chunk.Position.x + x) + chunk.Position.y + z)).NextInt(-5, 6) + new Random(509 * seed + (uint)(509 * (chunk.Position.y + z) + Mathf.Pow(-1, x) * (chunk.Position.x + x))).NextInt(-5, 6);
-
-                if (Mathf.Abs(verticalOffsets[x, z]) > 7)
-                    verticalOffsets[x, z] = (int)Mathf.Sign(verticalOffsets[x, z]);
-                else
-                    verticalOffsets[x, z] = 0;
+                grounds[x, z] = (new Random(257 * seed + (uint)(257 * (vector.x + x) + vector.y + z)).NextInt(0, 3) + new Random(509 * seed + (uint)(509 * (vector.y + z) + Mathf.Pow(-1, x) * (vector.x + x))).NextInt(0, 3)) / 2;
+                verticalOffsets[x, z] = new Random(257 * seed + (uint)(257 * (vector.x + x) + vector.y + z)).NextInt(-1, 1) + new Random(509 * seed + (uint)(509 * (vector.y + z) + Mathf.Pow(-1, x) * (vector.x + x))).NextInt(-1, 1) / 2;
             }
 
         for (int y = 0; y < 256; ++y)
@@ -135,21 +131,23 @@ public class ChunkManager : MonoBehaviour
                     for (int z = 0; z < 16; ++z)
                         tmp[x, y, z] = blocks[x, y, 15 - z];
 
-        chunk.Blocks = tmp;
+        chunkLoaded[vector] = false;
 
-        chunk.verticalOffsets = offsets;
+        Chunk result = new Chunk(vector, tmp);
 
-        chunkLoaded[chunk.Position] = false;
+        inChunk[vector] = false;
+
+        return result;
     }
 }
 
 public struct Chunk
 {
-    public Vector2 Position;
+    public Vector2Int Position;
     public int?[,,] Blocks;
     public int[] verticalOffsets;
 
-    public Chunk(Vector2 pos, int?[,,] blocks)
+    public Chunk(Vector2Int pos, int?[,,] blocks)
     {
         Position = pos;
         Blocks = blocks;

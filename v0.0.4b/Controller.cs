@@ -166,8 +166,23 @@ public class Controller : MonoBehaviour
                     blockController.Build(slots[nrSlot]);
             }
 
-            /*if (Input.GetKey(kill))
-                gameSettings.Spawn(this.gameObject.GetComponent<MapGenerator>().Chunks());*/
+            if (Input.GetKey(kill))
+            {
+                var mapGenerator = this.gameObject.GetComponent<MapGenerator>();
+                var blockMap = this.gameObject.GetComponent<BlockMap>().blockMap;
+
+                int height = 0;
+
+                for(int y=0;y<mapGenerator.MapSize().y;++y)
+                    if(mapGenerator.Chunks()[new Vector2Int(0, 0)].Blocks[0, y, 0]==blockMap[0x30].BlockId)
+                    {
+                        height = y;
+
+                        break;
+                    }
+
+                gameSettings.Spawn(height);
+            }
 
             if (scroll != 0)
             {
