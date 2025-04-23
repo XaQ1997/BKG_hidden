@@ -23,7 +23,6 @@ public class BlockController : MonoBehaviour
     public void Build(GameObject prefab)
     {
         var blocks = mapGenerator.Blocks();
-        var chunks = mapGenerator.Chunks();
         var mapOffset = mapGenerator.MapOffset();
 
         Vector3Int pos = new Vector3Int((int)transform.position.x, (int)transform.position.y, (int)transform.position.z);
@@ -44,39 +43,22 @@ public class BlockController : MonoBehaviour
             }
         }
 
-        var chunkBlocks = chunks[new Vector2Int(pos.x/16, pos.z/16)].Blocks;
-
         string id = "";
 
         foreach (var block in blockMap.blockMap.Keys)
             if (blockMap.blockMap[block].BlockPrefab == prefab)
                 id = block;
-
-        chunkBlocks[pos.x % 16, pos.y % 16, pos.z % 16] = id;
-
-        Chunk chunk = new Chunk(new Vector2Int(pos.x / 16, pos.z / 16), chunkBlocks);
-
-        mapGenerator.ChunkReload(chunk, new Vector2Int(pos.x / 16, pos.z / 16));
     }
 
     public void DestroyBlock()
     {
         var blocks = mapGenerator.Blocks();
         var mapOffset = mapGenerator.MapOffset();
-        var chunks = mapGenerator.Chunks();
 
         if (Physics.Raycast(InCursor.position, InCursor.forward, out RaycastHit hitInfo, length * Vector3.Magnitude(InCursor.forward)))
             if (hitInfo.transform.tag == Tag)
             {
                 Destroy(hitInfo.transform.gameObject);
-
-                var chunkBlocks = chunks[new Vector2Int((int)hitInfo.transform.position.x / 16, (int)hitInfo.transform.position.z / 16)].Blocks;
-
-                chunkBlocks[(int)hitInfo.transform.position.x % 16, (int)hitInfo.transform.position.y % 16, (int)hitInfo.transform.position.z % 16] = null;
-
-                Chunk chunk = new Chunk(new Vector2Int((int)hitInfo.transform.position.x / 16, (int)hitInfo.transform.position.z / 16), chunkBlocks);
-
-                mapGenerator.ChunkReload(chunk, new Vector2Int((int)hitInfo.transform.position.x / 16, (int)hitInfo.transform.position.z / 16));
             }
     }
 
