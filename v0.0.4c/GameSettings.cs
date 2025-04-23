@@ -21,7 +21,7 @@ public class GameSettings : MonoBehaviour
 
     public void Spawn(int height)
     {
-        transform.position = new Vector3(0, height+1.8f);
+        transform.position = new Vector3(0, height+1.8f, 0);
         transform.rotation = spawnRotation;
     }
 }

@@ -9,6 +9,10 @@ namespace BKG.Math
 {
     public class MathOperations
     {
+        private PrimeNumbers prime = new PrimeNumbers();
+        private Friction frictions = new Friction();
+        private Statistic statistic = new Statistic();
+
         public int NWW(int[] numbers)
         {
             int result = numbers[0];
@@ -45,7 +49,7 @@ namespace BKG.Math
         public int PrimeNumberModularSeed(int count, int seed)
         {
             int result = 0;
-            int[] primeNumbers = (new PrimeNumbers()).EratostenesSieve(count).ToArray();
+            int[] primeNumbers = (prime.EratostenesSieve(count)).ToArray();
 
             for (int i = 0; i < count; ++i)
                 result += seed % primeNumbers[i];
@@ -53,46 +57,61 @@ namespace BKG.Math
             return result;
         }
 
-        public int CreatingSeed(int seed, int bottom, int top, int level)
+        public int CreatingSeed(int seed, int bottom, int top, int level, int[] offsets, Vector2Int pos, float scale=1.0f)
         {
+            int result = 0;
+            float perlinScale = 0.1f*scale;
+
             int[,] chances = new int[top - bottom, 2];
 
-            for (int i = 0; i < chances.Length; ++i)
+            for (int i = 0; i < chances.GetLength(0); ++i)
                 chances[i, 0] = 1;
 
             chances[level - bottom, 1] = 1;
 
-            for (int i = 1; i <= level - bottom; ++i)
-                chances[level - bottom - i, 1] = i + 1;
+            int down = level - bottom;
+            int[] primeNumbers = PrimeNumbers(down);
 
-            for (int i = 1; i < top-level; ++i)
-                chances[level - bottom + i, 1] = i + 1;
+            for (int i = 0; i < down; ++i)
+                chances[i, 1] = primeNumbers[primeNumbers.Length - i - 1];
 
-            int[] friction = (new Friction()).FrictionSum(chances);
+            int up = top - level;
+            primeNumbers = PrimeNumbers(up - 1);
 
-            int[] temp = new int[chances.Length];
+            for (int i = 0; i < up-1; ++i)
+                chances[down + i + 1, 1] = primeNumbers[i];
+            
+            int[] friction = frictions.FrictionSum(chances);
+
+            int[] temp = new int[chances.GetLength(0)];
 
             for (int i = 0; i < temp.Length; ++i)
-                temp[i] = (new Friction()).FrictionValue(new int[2] { temp[i], chances[i, 1] }, friction[1]);
+                temp[i] = frictions.FrictionValue(new int[2] { temp[i], chances[i, 1] }, friction[1]);
 
-            Dictionary<string, int[]> tmp = (new Statistic()).Chance(temp);
+            Dictionary<string, int[]> tmp = statistic.Chance(temp);
 
             friction[0] *= tmp["Mnożnik"][0];
             friction[1] *= tmp["Mnożnik"][0];
 
+            int seeding = PrimeNumberModularSeed(friction[0], seed) % friction[0];
 
-            int result = 0;
-
-            int seeding = PrimeNumberModularSeed(friction[0], seed)%friction[0];
-
-            for(int i=0;i<temp.Length;++i)
+            for (int i = 0; i < temp.Length; ++i)
             {
-                if((new Statistic()).Distributor(temp, i)>=seeding)
+                if (statistic.Distributor(temp, i) >= seeding)
                 {
-                    result = bottom+i;
+                    result = i;
                     break;
                 }
             }
+
+            float flatnessFactor = Mathf.Clamp(Mathf.PerlinNoise(pos.x * perlinScale * 0.5f, pos.y * perlinScale * 0.5f), offsets[0], offsets[1]);
+            float perlinNoiseValue = Mathf.PerlinNoise((pos.x + DividingSeed(seed, true)) * perlinScale, (pos.y + DividingSeed(seed, false)) * perlinScale);
+
+            perlinNoiseValue = Mathf.Lerp(perlinNoiseValue, 0.5f, flatnessFactor);
+
+            int perlinResult = Mathf.FloorToInt(perlinNoiseValue * (top - bottom)) + bottom;
+
+            result = Mathf.Clamp(perlinResult + (result + bottom) / level, bottom, top);
 
             return result;
         }
@@ -104,10 +123,28 @@ namespace BKG.Math
             dividedSeeds[0] = seed >> 16;
             dividedSeeds[1] = seed & ((1 << 16) - 1);
 
-            if (isMain==true)
+            if (isMain == true)
                 return dividedSeeds[0];
 
             return dividedSeeds[1];
+        }
+
+        public int ChunkSeed(int seed, Vector2Int pos)
+        {
+            int[] dividedSeeds = new int[2] { DividingSeed(seed, true), DividingSeed(seed, false) };
+
+            int result = ((dividedSeeds[0] << 16) * 257 * pos.x) + (dividedSeeds[1] * 17 * pos.y) + seed;
+
+            return result;
+        }
+
+        public int LocalSeed(int seed, Vector2Int pos)
+        {
+            int[] dividedSeeds = new int[2] { DividingSeed(seed, true), DividingSeed(seed, false) };
+
+            int result = ((dividedSeeds[0] << 16) * 17 * pos.x) + (dividedSeeds[1] * pos.y) + seed;
+
+            return result;
         }
 
         public int Multiply(int value)
@@ -123,117 +160,37 @@ namespace BKG.Math
             return multiplier;
         }
 
-        public int CalculatingOffset(int seed, int minOffset, int min, int maxOffset, int max, int defaultLevel, int currentLevel)
+        public bool IsShownChunk(Vector2Int center, Vector2Int chunkPos, int renderDistance)
         {
-            int result = 0;
-
-            int down = Mathf.Max(min, currentLevel + minOffset);
-            int up = Mathf.Min(max, currentLevel + maxOffset);
-
-            int level = (int)Mathf.Sign(currentLevel - defaultLevel);
-
-            int[,] chances = new int[up - down, 2];
-
-            for (int i = 0; i < chances.Length; ++i)
-                chances[i, 0] = 1;
-
-            chances[currentLevel - down, 1] = 1;
-
-            for (int i = 1; i <= currentLevel - down; ++i)
-                chances[currentLevel - down - i, 1] = i + 1;
-
-            for (int i = 1; i < up - currentLevel; ++i)
-                chances[up - currentLevel + i, 1] = i + 1;
-
-            int[,] tmp = new int[up - down, 2];
-
-            for (int i = 0; i < tmp.Length; ++i)
-            {
-                tmp[i, 1] = 1;
-                tmp[i, 0] = 1;
-            }
-
-            if (level == 1)
-            {
-                if (maxOffset > max - currentLevel)
-                    for (int i = 1; i < tmp.Length; ++i)
-                        tmp[i, 1] = i + 1;
-                else
-                {
-                    int tempy = max - currentLevel;
-
-                    for (int i = tempy + 1; i < max; ++i)
-                        tmp[i, 1] = i - tempy + 1;
-
-                    for (int i = 0; i < tempy; ++i)
-                        tmp[i, 1] = tempy - i + 1;
-                }
-            }
-            if(level==-1)
-            {
-                if (minOffset < currentLevel - min)
-                    for (int i = 1; i < tmp.Length; ++i)
-                        tmp[i, 1] = tmp.Length - i + 1;
-                else
-                {
-                    int tempy = currentLevel - min;
-
-
-                    for (int i = tempy + 1; i < max; ++i)
-                        tmp[i, 1] = i - tempy + 1;
-
-                    for (int i = 0; i < tempy; ++i)
-                        tmp[i, 1] = tempy - i + 1;
-                }
-            }
-
-            for (int i = 0; i < chances.Length; ++i)
-                chances[i, 1] *= tmp[i, 1];
-
-            int[] friction = (new Friction()).FrictionSum(chances);
-
-            int[] temp = new int[chances.Length];
-
-            for (int i = 0; i < temp.Length; ++i)
-                temp[i] = (new Friction()).FrictionValue(new int[2] { temp[i], chances[i, 1] }, friction[1]);
-
-            Dictionary<string, int[]> temporary = (new Statistic()).Chance(temp);
-
-            friction[0] *= temporary["Mnożnik"][0];
-            friction[1] *= temporary["Mnożnik"][0];
-
-            int seeding = PrimeNumberModularSeed(friction[0], seed) % friction[0];
-
-            for (int i = 0; i < temp.Length; ++i)
-            {
-                if ((new Statistic()).Distributor(temp, i) >= seeding)
-                {
-                    result = down + i;
-                    break;
-                }
-            }
-
-            return result;
+            int dx = center.x - chunkPos.x;
+            int dz = center.y - chunkPos.y;
+            return (dx * dx + dz * dz) <= (renderDistance * renderDistance);
         }
 
-        public int CalculatingAllignOffset(int seed, int min, int minOffset, int max, int maxOffset, int defaultLevel, int[] layer)
+        public int[] PrimeNumbers(int target)
         {
-            int result = 0;
+            List<int> result = new List<int>();
 
-            int[] range = new int[2];
+            int sum = 0;
+            int count = 1;
 
-            if(layer[0]<=layer[1])
+            while (sum < target)
             {
-                range[0] = Mathf.Max(min, layer[1] + minOffset);
-                range[1] = Mathf.Min(max, layer[0] + maxOffset);
-            }
-            else
-            {
-                range[0] = Mathf.Max(min, layer[0] + minOffset);
-                range[1] = Mathf.Min(max, layer[1] + maxOffset);
+                int nextPrime = prime.FindPrimeNumber(result);
+
+                for (int i = 0; i < nextPrime; ++i)
+                {
+                    if (sum >= target)
+                        break;
+                    
+                    result.Add((int)Mathf.Pow(2, count));
+                    ++sum;
+                }
+
+                count++;
             }
 
-            return result;
+            return result.ToArray();
         }
     }
 }

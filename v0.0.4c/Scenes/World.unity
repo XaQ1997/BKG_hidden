@@ -4474,6 +4474,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55a1fe68d8857a24eaef8207b1a28cc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1326522958}
+  gameSettings: {fileID: 1306395301}
+  blockController: {fileID: 1306395296}
   layer:
     serializedVersion: 2
     m_Bits: 0
@@ -4868,6 +4871,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1326522956}
+  - component: {fileID: 1326522959}
+  - component: {fileID: 1326522960}
   - component: {fileID: 1326522955}
   - component: {fileID: 1326522958}
   - component: {fileID: 1326522957}
@@ -4890,6 +4895,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17fb79639c6073b48aeb0aa259242481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1326522958}
+  chunkGenerator: {fileID: 1326522959}
+  chunkLoader: {fileID: 1326522960}
 --- !u!4 &1326522956
 Transform:
   m_ObjectHideFlags: 0
@@ -4952,14 +4960,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 8916930299331188528, guid: 216bef6eec2b2c14d82484440e91937b, type: 3}
   - {fileID: 4417088685626385698, guid: 3285f03478ceb0349bf2047ccef1538f, type: 3}
-  - {fileID: 124085825068657902, guid: 3c7a7cab0e4ee5f408b15c889e4d6a84, type: 3}
-  - {fileID: 5320737572099849688, guid: 153d55e170dda004b8cef54d36086600, type: 3}
-  - {fileID: 297528010846629782, guid: b7420a9d6afb9c84fba9d01159a6168b, type: 3}
-  - {fileID: 6871590840801895694, guid: 686b76ad3fa2da145a455059c0f41214, type: 3}
-  - {fileID: 981997185243924041, guid: 43f53876d56e8e44c8d5cb936f38ba66, type: 3}
-  - {fileID: 2912984596684207439, guid: 61d42b74c1bcc714eb8fc3d6761c7400, type: 3}
-  - {fileID: 8319495864697988091, guid: bdf1ba3e5c5e83645bcb481989ed37c3, type: 3}
-  - {fileID: 2071227459713008945, guid: 0fdeb30a74a161e4bbe358391709a95a, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
@@ -5174,6 +5182,40 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  stonePrefabs:
+  - {fileID: 8916930299331188528, guid: 216bef6eec2b2c14d82484440e91937b, type: 3}
+  - {fileID: 124085825068657902, guid: 3c7a7cab0e4ee5f408b15c889e4d6a84, type: 3}
+  - {fileID: 5320737572099849688, guid: 153d55e170dda004b8cef54d36086600, type: 3}
+  - {fileID: 981997185243924041, guid: 43f53876d56e8e44c8d5cb936f38ba66, type: 3}
+  - {fileID: 2912984596684207439, guid: 61d42b74c1bcc714eb8fc3d6761c7400, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  cobblestonePrefabs:
+  - {fileID: 4417088685626385698, guid: 3285f03478ceb0349bf2047ccef1538f, type: 3}
+  - {fileID: 297528010846629782, guid: b7420a9d6afb9c84fba9d01159a6168b, type: 3}
+  - {fileID: 6871590840801895694, guid: 686b76ad3fa2da145a455059c0f41214, type: 3}
+  - {fileID: 8319495864697988091, guid: bdf1ba3e5c5e83645bcb481989ed37c3, type: 3}
+  - {fileID: 2071227459713008945, guid: 0fdeb30a74a161e4bbe358391709a95a, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!114 &1326522958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5188,10 +5230,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapSize: {x: 256, y: 256, z: 256}
   mapOffset: {x: 128, y: 0, z: 128}
+  seed: 0
   chunkManager: {fileID: 1326522955}
-  renderDistance: 2
+  generateDistance: 2
+  renderDistance: 1
   blockMap: {fileID: 1326522957}
   gameSettings: {fileID: 1306395301}
+--- !u!114 &1326522959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326522954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10747ded08ae6a54fabf1ec9de654e1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1326522958}
+  chunkManager: {fileID: 1326522955}
+--- !u!114 &1326522960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1326522954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a8d7031ed683c440812392ece2f5a71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapGenerator: {fileID: 1326522958}
+  chunkManager: {fileID: 1326522955}
 --- !u!1 &1385390711
 GameObject:
   m_ObjectHideFlags: 0

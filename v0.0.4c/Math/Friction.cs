@@ -11,15 +11,17 @@ namespace BKG.Math
         public int[] FrictionSum(int[,] frictions)
         {
             int[] result = new int[2];
+            result[0] = 0;
 
-            int[] denominators = new int[frictions.Length];
+            int rowCount = frictions.GetLength(0);
+            int[] denominators = new int[rowCount];
 
-            for (int i = 0; i < frictions.Length; ++i)
+            for (int i = 0; i < rowCount; ++i)
                 denominators[i] = frictions[i, 1];
 
             result[1] = (new MathOperations()).NWW(denominators);
 
-            for (int i = 0; i < frictions.Length; ++i)
+            for (int i = 0; i < rowCount; ++i)
                 result[0] += FrictionValue(new int[2] { frictions[i, 0], frictions[i, 1] }, result[1]);
 
             return result;

@@ -25,6 +25,11 @@ public class Controller : MonoBehaviour
     private float h;
     private bool isInventory = false;
 
+    //scripts
+    [SerializeField] private MapGenerator mapGenerator;
+    [SerializeField] private GameSettings gameSettings;
+    [SerializeField] private BlockController blockController;
+
     //gravity arguments
     [SerializeField] private LayerMask layer;
     [SerializeField] private float gravity = 9.81f;
@@ -86,8 +91,6 @@ public class Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var blockController = this.gameObject.GetComponent<BlockController>();
-        var gameSettings = this.gameObject.GetComponent<GameSettings>();
         scroll = Input.mouseScrollDelta.y;
 
         if (gamePaused == false)
@@ -170,12 +173,10 @@ public class Controller : MonoBehaviour
 
             if (Input.GetKey(kill))
             {
-                var mapGenerator = this.gameObject.GetComponent<MapGenerator>();
-
                 int height = 0;
 
                 for(int y=0;y<mapGenerator.MapSize().y;++y)
-                    if(mapGenerator.Chunks()[new Vector2Int(0, 0)].Blocks[0, y, 0]=="30")
+                    if(mapGenerator.Block(mapGenerator.MapOffset().x, mapGenerator.MapOffset().y, mapGenerator.MapOffset().z, "30"))
                     {
                         height = y;
 
@@ -297,8 +298,6 @@ public class Controller : MonoBehaviour
 
     public void Reset()
     {
-        var mapGenerator = this.gameObject.GetComponent<MapGenerator>();
-
         mapGenerator.CleanMap();
         mapGenerator.InitGame();
 

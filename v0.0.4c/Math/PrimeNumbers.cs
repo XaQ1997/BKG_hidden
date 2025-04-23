@@ -13,15 +13,35 @@ namespace BKG.Math
             if (count < 1)
                 return new List<int>();
 
-            List<int> result = new List<int>(2);
+            List<int> result = new List<int> { 2 };
 
-            for (int i = 3; result.Count < count; i+=2)
+            for (int i = 1; i < count; ++i)
+                result.Add(FindPrimeNumber(result));
+
+            return result;
+        }
+
+        public int FindPrimeNumber(List<int> smallerPrimeNumbers)
+        {
+            if (smallerPrimeNumbers == null || smallerPrimeNumbers.Count == 0)
+            {
+                return 2;
+            }
+
+            int lastPrime = smallerPrimeNumbers[smallerPrimeNumbers.Count - 1];
+            int candidate = lastPrime + 1;
+
+            while (true)
             {
                 bool isPrime = true;
 
-                for (int j = 3; j * j <= i; j+=2)
+                foreach (var prime in smallerPrimeNumbers)
                 {
-                    if (i % j == 0)
+                    if (prime * prime > candidate)
+                    {
+                        break;
+                    }
+                    if (candidate % prime == 0)
                     {
                         isPrime = false;
                         break;
@@ -30,11 +50,11 @@ namespace BKG.Math
 
                 if (isPrime)
                 {
-                    result.Add(i);
+                    return candidate;
                 }
-            }
 
-            return result;
+                candidate++;
+            }
         }
     }
 }
